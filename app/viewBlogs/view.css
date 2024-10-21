@@ -1,0 +1,50 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif; /* Font for the entire body */
+    background-color: #f4f4f4;      /* Light gray background */
+    margin: 0;                      /* No default margin */
+    padding: 80px;                  /* Padding around the body */
+}
+
+/* Blog Posts Container */
+.blog-posts {
+    background: white;              /* White background for the container */
+    padding: 20px;                  /* Padding inside the container */
+    border-radius: 5px;             /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    max-width: 600px;               /* Max width of the container */
+    margin: auto;                   /* Center the container */
+}
+
+/* Heading Style */
+h1 {
+    font-size: 24px;                /* Font size for the heading */
+    color: #333;                    /* Dark text color */
+    text-align: center;             /* Center the heading */
+    margin-bottom: 20px;            /* Space below the heading */
+    font-weight: bold;              /* Bold text */
+}
+
+/* Ordered List Styles */
+.blog-posts ol {
+    padding-left: 20px;             /* Indent list */
+}
+
+/* List Item Styles */
+.blog-posts li {
+    margin-bottom: 10px;            /* Space between list items */
+    font-size: 18px;                /* Font size for list items */
+    color: #555;                    /* Slightly lighter text color */
+}
+
+/* Link Styles */
+.blog-posts a {
+    text-decoration: none;           /* Remove underline from links */
+    color: #0070f3;                 /* Link color */
+    transition: color 0.3s;         /* Smooth transition for hover effect */
+}
+
+/* Link Hover Effect */
+.blog-posts a:hover {
+    color: #0056b3;                 /* Darker color on hover */
+}
