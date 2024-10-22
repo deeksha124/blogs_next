@@ -29,11 +29,10 @@ const SlateEditor: React.FC<{ content: string; onChange: (content: string) => vo
   return (
     <>
       <JoditEditor
-        // innerRef={editor}
-        ref={editor}
-       value={editorContent}
+        innerRef={editor}
+        value={editorContent}
         config={config}
-        // tabIndex={1} // tabIndex of textarea
+         tabIndex={1} // tabIndex of textarea
         onBlur={handleBlur} // use handleBlur to update the content
         onChange={(newContent) => { /* You can handle real-time changes here if needed */ }}
       />

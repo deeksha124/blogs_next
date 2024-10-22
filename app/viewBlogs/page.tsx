@@ -1,6 +1,6 @@
-// app/viewBlogs/page.tsx
+"use client"; // This marks the component as a Client Component
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import './view.css'; // Ensure to import your CSS file
 
@@ -9,28 +9,49 @@ interface Post {
   title: string;
 }
 
-
-const ViewBlogsPage: React.FC = async () => {
-  let posts: Post[] = [];
+const ViewBlogsPage: React.FC = () => {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const fetchPosts = async (): Promise<Post[]> => {
-    const response = await fetch('http://192.168.8.237:5000/v1/blog/viewblogslist');
-  
-    console.log("response----->>>>" , response)
+    if (!apiUrl) throw new Error('API URL is not defined');
+    
+    const response = await fetch(`${apiUrl}/blog/viewblogslist`); // Use the API URL
+
+    console.log("response--" ,response)
+
     if (!response.ok) {
       throw new Error('Failed to fetch posts');
     }
+    
     const data = await response.json();
-    console.log("Data------>>" ,data)
     return data; // Adjust this if your API wraps the array in another object
   };
-  
 
-  try {
-    posts = await fetchPosts();
-  } catch (error) {
-    console.error('Error fetching posts:', error);
-    // You may want to handle error state here (e.g., display an error message)
+  useEffect(() => {
+    const loadPosts = async () => {
+      try {
+        const fetchedPosts = await fetchPosts();
+        setPosts(fetchedPosts);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+        setError('Failed to load posts');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPosts();
+  }, []); // Empty dependency array means this runs once when the component mounts
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="error-message">{error}</div>;
   }
 
   return (
@@ -51,9 +72,3 @@ const ViewBlogsPage: React.FC = async () => {
 };
 
 export default ViewBlogsPage;
-
-
-
-
-
-
