@@ -1,50 +1,77 @@
-/* Global Styles */
-body {
-    font-family: Arial, sans-serif; /* Font for the entire body */
-    background-color: #f4f4f4;      /* Light gray background */
-    margin: 0;                      /* No default margin */
-    padding: 80px;                  /* Padding around the body */
-}
+/* view.css */
 
-/* Blog Posts Container */
+/* Basic styling for the blog posts container */
 .blog-posts {
-    background: white;              /* White background for the container */
-    padding: 20px;                  /* Padding inside the container */
-    border-radius: 5px;             /* Rounded corners */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    max-width: 600px;               /* Max width of the container */
-    margin: auto;                   /* Center the container */
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
 }
 
-/* Heading Style */
+/* Heading styles */
 h1 {
-    font-size: 24px;                /* Font size for the heading */
-    color: #333;                    /* Dark text color */
-    text-align: center;             /* Center the heading */
-    margin-bottom: 20px;            /* Space below the heading */
-    font-weight: bold;              /* Bold text */
+  text-align: center;
+  color: #333;
 }
 
-/* Ordered List Styles */
-.blog-posts ol {
-    padding-left: 20px;             /* Indent list */
+/* Ordered list styling */
+ol {
+  padding-left: 20px;
 }
 
-/* List Item Styles */
-.blog-posts li {
-    margin-bottom: 10px;            /* Space between list items */
-    font-size: 18px;                /* Font size for list items */
-    color: #555;                    /* Slightly lighter text color */
+/* List item styling */
+li {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  background-color: #fff;
 }
 
-/* Link Styles */
-.blog-posts a {
-    text-decoration: none;           /* Remove underline from links */
-    color: #0070f3;                 /* Link color */
-    transition: color 0.3s;         /* Smooth transition for hover effect */
+/* Action buttons container styling */
+.actionButtons {
+  margin-top: 10px; /* Space between the title and buttons */
 }
 
-/* Link Hover Effect */
-.blog-posts a:hover {
-    color: #0056b3;                 /* Darker color on hover */
+/* Button styling */
+.actionButtons button {
+  margin-right: 10px; /* Space between buttons */
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+/* Preview and Update button styles */
+.actionButtons button:nth-child(1), /* Preview */
+.actionButtons button:nth-child(2) { /* Update */
+  background-color: #0070f3; /* Primary color */
+  color: white;
+}
+
+.actionButtons button:nth-child(1):hover,
+.actionButtons button:nth-child(2):hover {
+  background-color: #005bb5; /* Darker shade on hover */
+}
+
+/* Delete button styles */
+.actionButtons button:nth-child(3) { /* Delete */
+  background-color: #d9534f; /* Danger color */
+  color: white;
+}
+
+.actionButtons button:nth-child(3):hover {
+  background-color: #c9302c; /* Darker shade on hover */
+}
+
+/* Error message styling */
+.error-message {
+  color: #d9534f; /* Danger color */
+  text-align: center;
+  margin-top: 20px;
+  font-weight: bold;
 }
