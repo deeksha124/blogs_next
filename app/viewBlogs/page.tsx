@@ -111,6 +111,8 @@
 //   );
 // };
 
+
+
 // export default ViewBlogsPage;
 import React from 'react';
 import BlogActions from './BlogActions'; // Adjust the path if needed
@@ -132,14 +134,14 @@ const ViewBlogsPage: React.FC<Props> = ({ posts, error }) => {
   }
 
   return (
-    
     <div className="blog-posts">
-      <h1>Blog Posts</h1>
+      <h1>Your Blogs</h1>
       <ol>
         {posts.map((post, index) => (
-          <li key={post.blog_id}>
-            <span>{index + 1}. </span>
-            <span>{post.title}</span>
+          <li key={post.blog_id} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+            <span style={{ flex: 1 }}>
+              {index + 1}. {post.title}
+            </span>
             <BlogActions post={post} />
           </li>
         ))}

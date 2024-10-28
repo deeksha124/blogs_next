@@ -1,28 +1,34 @@
 /* General styles for the blog post page */
 .blog-post {
-  max-width: 800px; /* Limit the width of the content */
+  max-width: 1000px; /* Limit the width of the content */
   margin: 0 auto;   /* Center the content */
   padding: 20px;    /* Padding around the content */
 }
 
 .banner {
   position: relative;
-  width: 100%;         /* Full width */
-  height: 0;           /* Initially set height to zero */
-  padding-bottom: 800px; /* 1:2 aspect ratio (height is 50% of width) */
-  overflow: hidden;    /* Prevent overflow */
+  width: 100%;          /* Full width */
+  height: 0;            /* Initially set height to zero */
+  padding-bottom: 50%;  /* 2:1 aspect ratio (height is 50% of width) */
+  padding-top: 50%;  /* 2:1 aspect ratio (height is 50% of width) */
+  overflow: hidden;     /* Prevent overflow */
 }
 
 .banner img {
-  position: absolute;   /* Absolute positioning */
-  top: 50%;             /* Centering vertically */
-  left: 50%;            /* Centering horizontally */
-  min-width: 100%;      /* Minimum width 100% */
-  min-height: 100%;     /* Minimum height 100% */
-  width: auto;          /* Auto width */
-  height: auto;         /* Auto height */
+  position: absolute; /* Positioning the image */
+  top: 50%;          /* Center vertically */
+  left: 50%;         /* Center horizontally */
+  min-width: 100%;   /* Minimum width 100% to cover full area */
+  min-height: 100%;  /* Minimum height 100% to cover full area */
+  width: auto;       /* Width auto to maintain aspect ratio */
+  height: auto;      /* Height auto to maintain aspect ratio */
   transform: translate(-50%, -50%); /* Center the image */
-  object-fit: cover;    /* Cover the area without distortion */
+  object-fit: cover; /* Cover the entire area without distortion */
+  transition: transform 0.5s ease; /* Smooth transition for hover effect */
+}
+
+.banner:hover img {
+  transform: translate(-50%, -50%) scale(1.5); /* Zoom effect on hover */
 }
 
 h1 {

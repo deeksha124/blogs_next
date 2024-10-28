@@ -2,18 +2,21 @@
 
 /* Basic styling for the blog posts container */
 .blog-posts {
-  max-width: 800px;
-  margin: 20px auto;
+  max-width: 90%; /* Full width */
+  min-width: 10%; /* Full width */
+  margin: 20px auto; /* Center the container */
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: #f9f9f9;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
 }
 
 /* Heading styles */
 h1 {
   text-align: center;
-  color: #333;
+  font-size: 2.05em;
+  color: #510b6d;
 }
 
 /* Ordered list styling */
@@ -33,6 +36,8 @@ li {
 /* Action buttons container styling */
 .actionButtons {
   margin-top: 10px; /* Space between the title and buttons */
+  display: flex; /* Use flexbox for horizontal alignment */
+  align-items: center; /* Center the icons vertically */
 }
 
 /* Button styling */
