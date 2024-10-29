@@ -11,34 +11,29 @@ interface Post {
   image: string;
 }
 
-const BlogPostPage = async ({ params }: { params: { blog_id: string } }) => {
+interface Props {
+  params: {
+    blog_id: string;
+  };
+}
+
+const BlogPostPage = async ({ params }: Props) => {
   const { blog_id } = params;
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-  if (!apiUrl) {
-    return (
-      <>
-        <Head>
-          <title>Error</title>
-        </Head>
-        <div className="error">Error: API URL is not defined</div>
-      </>
-    );
-  }
 
   let post: Post | null = null;
   let error: string | null = null;
 
   try {
     const response = await fetch(`${apiUrl}/blog/viewblog/${blog_id}`);
-    
+    console.log("response----" ,response)
+
     if (!response.ok) {
       throw new Error("Failed to fetch post");
     }
 
     post = await response.json();
-
-    console.log(post)
+    console.log(post);
   } catch (err) {
     error = err instanceof Error ? err.message : "An error occurred";
   }
@@ -68,27 +63,48 @@ const BlogPostPage = async ({ params }: { params: { blog_id: string } }) => {
   return (
     <>
       <Head>
-        <title>{post.title || "View Content"}</title>
+        <title>{post.title}</title>
+        <meta name="description" content={post.content.substring(0, 160)} />
       </Head>
       <div className="blog-post">
         {post.image && (
           <div className="banner">
-            <img
-              src={post.image}
-              alt={post.title}
-            />
+            <img src={post.image} alt={post.title} />
           </div>
         )}
         <h1>{post.title.toUpperCase()}</h1>
         <div className="content-container">
-          <div
-            dangerouslySetInnerHTML={{ __html: post.content }}
-            className="content"
-          />
+          <div dangerouslySetInnerHTML={{ __html: post.content }} className="content" />
         </div>
       </div>
     </>
   );
 };
+
+export async function generateMetadata({ params }: Props): Promise<{ title: string; description: string }> {
+  const { blog_id } = params;
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  try {
+    const response = await fetch(`${apiUrl}/blog/viewblog/${blog_id}`);
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch metadata");
+    }
+
+    const post: Post = await response.json();
+    console.log("++++++++++++++++++++++++++++++++++++++");
+    console.log(post); // Correct reference to post
+    return {
+      title: post.title,
+      description: post.content.substring(0, 160),
+    };
+  } catch (err) {
+    return {
+      title: "Error",
+      description: "An error occurred while fetching metadata.",
+    };
+  }
+}
 
 export default BlogPostPage;
