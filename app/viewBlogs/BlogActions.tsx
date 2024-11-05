@@ -58,6 +58,8 @@
 //     </div>
 //   );
 // };
+
+
 "use client"; // This marks the component as a Client Component
 
 import React from 'react';
@@ -107,7 +109,7 @@ const BlogActions: React.FC<BlogActionsProps> = ({ post }) => {
   return (
     <div className='actionButtons' style={{ display: 'flex', alignItems: 'center' }}>
       <img 
-        src="/icons/search.png" // Path to your preview icon
+        src="/icons/eye.png" // Path to your preview icon
         alt="Preview"
         onClick={handlePreview}
         style={{ cursor: 'pointer', marginRight: '10px', width: '24px', height: '24px' }} // Adjust size as needed
