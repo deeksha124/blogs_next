@@ -1,50 +1,14 @@
-// import React from "react";
-// import "../signup/signup.css";
-
-// function LoginPage() {
-//   return (
-//     <div className="form-container">
-//       <h1>SIGNUP</h1>
-//       <form>
-//         <div className="form-group">
-//         <div>
-//             <label htmlFor="Name">Name:</label>
-//             <input type="text" id="Name" name="Name" placeholder="Name" required />
-//           </div>
-//           <div>
-//             <label htmlFor="Email">Email:</label>
-//             <input type="text" id="Email" name="Email" placeholder="Email" required />
-//           </div>
-//           <div>
-//             <label htmlFor="Phone">Phone:</label>
-//             <input type="number" id="Phone" name="Phone" placeholder="12344567890" required />
-//           </div>
-//           <div>
-//             <label htmlFor="password">password:</label>
-//             <input type="text" id="password" name="password" placeholder="password" required />
-//           </div>
-          
-          
-//         </div>
-//         <button type="submit">Login</button>
-//       </form>
-//     </div>
-//   );
-// }
-
-// export default LoginPage;
-
-
-
 "use client";
 import React, { useState, FormEvent } from "react";
+import "../signup/signup.css";
+import Cookies from "js-cookie"; // Import js-cookie
 
 const SignupPage: React.FC = () => {
-  const [name, setName] = useState<string>('');
-  const [email, setEmail] = useState<string>(''); 
-  const [phone, setPhone] = useState<string>('');
-  const [password, setPassword] = useState<string>(''); 
-  const [responseMessage, setResponseMessage] = useState<string>('');
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [responseMessage, setResponseMessage] = useState<string>("");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,29 +16,35 @@ const SignupPage: React.FC = () => {
     const userData = { name, email, phone, password };
 
     try {
-      const response = await fetch('http://192.168.8.237:5000/v1/user/signup', {
-        method: 'POST',
+      const response = await fetch("http://192.168.8.237:5000/v1/user/signup", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(userData),
       });
-   
-     console.log("response----" , response)
+
+      console.log("response----", response);
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Network response was not ok');
+        throw new Error(errorData.message || "Network response was not ok");
       }
 
       const data = await response.json();
       setResponseMessage(`User created: ${data.message}`);
-      
+
+      // Save token to cookies after successful Signup
+      Cookies.set("token", data.token);
+
       // Reset form fields
-      setName('');
-      setEmail('');
-      setPhone('');
-      setPassword('');
+      setName("");
+      setEmail("");
+      setPhone("");
+      setPassword("");
+
+      // Redirect to dashboard on success
+      window.location.href = "/dashboard"; // Full page redirect to the dashboard
     } catch (error) {
       setResponseMessage(`Error: ${(error as Error).message}`);
     }

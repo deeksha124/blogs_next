@@ -1,6 +1,6 @@
 import React from "react";
 import Head from "next/head";
-import '../[blog_id]/blog_id.css';
+import "../[blog_id]/blog_id.css";
 
 interface Post {
   id: string;
@@ -14,11 +14,13 @@ interface Post {
 interface Props {
   params: {
     blog_id: string;
+    slug: string;
   };
 }
 
 const BlogPostPage = async ({ params }: Props) => {
   const { blog_id } = params;
+  console.log({ blog_id });
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   let post: Post | null = null;
@@ -26,15 +28,14 @@ const BlogPostPage = async ({ params }: Props) => {
 
   try {
     const response = await fetch(`${apiUrl}/blog/viewblog/${blog_id}`);
-    console.log("response----" ,response)
-
+    console.log("response----", response);
     if (!response.ok) {
       throw new Error("Failed to fetch post");
     }
-
     post = await response.json();
     console.log(post);
   } catch (err) {
+    console.log(err);
     error = err instanceof Error ? err.message : "An error occurred";
   }
 
@@ -74,14 +75,19 @@ const BlogPostPage = async ({ params }: Props) => {
         )}
         <h1>{post.title.toUpperCase()}</h1>
         <div className="content-container">
-          <div dangerouslySetInnerHTML={{ __html: post.content }} className="content" />
+          <div
+            dangerouslySetInnerHTML={{ __html: post.content }}
+            className="content"
+          />
         </div>
       </div>
     </>
   );
 };
 
-export async function generateMetadata({ params }: Props): Promise<{ title: string; description: string }> {
+export async function generateMetadata({
+  params,
+}: Props): Promise<{ title: string; description: string }> {
   const { blog_id } = params;
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -93,7 +99,7 @@ export async function generateMetadata({ params }: Props): Promise<{ title: stri
     }
 
     const post: Post = await response.json();
-    console.log("++++++++++++++++++++++++++++++++++++++");
+    // console.log("++++++++++++++++++++++++++++++++++++++");
     console.log(post); // Correct reference to post
     return {
       title: post.title,

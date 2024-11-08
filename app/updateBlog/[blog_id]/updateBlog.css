@@ -1,4 +1,4 @@
-html, body {
+ html, body {
     height: 100%;               /* Set height to 100% for both html and body */
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -42,7 +42,7 @@ textarea {
     border-radius: 4px;
     box-sizing: border-box;
 }
-
+/* 
 button {
     padding: 10px 15px;
     background-color: #007bff;
@@ -51,8 +51,72 @@ button {
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
-}
+} */
 
-button:hover {
+/* button:hover {
     background-color: #0056b3;
-}
+}  */
+
+/* Add these styles to the CSS module */
+
+.image-container {
+    display: flex;
+    justify-content: center; /* Centers the image horizontally */
+    align-items: center;     /* Centers the image vertically (if needed) */
+    padding: 1rem;           /* Padding around the image container */
+  }
+  
+
+  .image-container {
+    display: flex;
+    justify-content: center;  /* Centers the image horizontally */
+    align-items: center;      /* Centers the image vertically (if needed) */
+    padding: 1rem;            /* Padding around the image container */
+    width: 80%;               /* Set a specific width for the container */
+    max-width: 200px;         /* Max width of the container (optional, adjust as needed) */
+    height: auto;             /* Maintain the height proportionally */
+    border: 1px solid #ddd;  /* Optional: Adds a border to the container */
+    border-radius: 10px;     /* Optional: Adds rounded corners */
+    overflow: hidden;        /* Ensures the image doesn't overflow the container */
+  }
+  
+  .image-container img {
+    max-width: 50%;          /* Makes sure the image fits within the container */
+    height: auto;             /* Maintains the aspect ratio of the image */
+    border-radius: 8px;       /* Optional: rounded corners for the image */
+  }
+  
+  .image-preview {
+    width: 80%;               /* Controls image width */
+    height: auto;             /* Maintains aspect ratio */
+    border-radius: 8px;       /* Optional: add rounded corners to the image */
+  }
+  
+
+
+  /* Container to center the button */
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+  }
+  
+  /* Styling for the button */
+  .button {
+    margin-top: 1rem;          /* Adds space above the button */
+    padding: 0.8rem 2rem;      /* Padding for the button */
+    background-color: #007bff; /* Button background color */
+    color: white;              /* Text color */
+    border: none;              /* Removes the border */
+    border-radius: 5px;        /* Rounded corners */
+    cursor: pointer;           /* Pointer cursor on hover */
+    font-size: 1.1rem;         /* Font size */
+    transition: background-color 0.3s; /* Smooth hover transition */
+  }
+  
+  /* Button hover effect */
+  .button:hover {
+    background-color: #0056b3; /* Change color on hover */
+  }
+  

@@ -1,101 +1,148 @@
-import Image from "next/image";
+import React from "react";
+import "../app/homePage.css";
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+interface Blog {
+  blog_id: string;
+  user_id: number;
+  title: string;
+  slug: string;
+  content: string;
+  image: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
+
+async function fetchBlogs(
+  page: number,
+  limit: number
+): Promise<{ blogs: Blog[]; totalPages: number }> {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const response = await fetch(
+    `${apiUrl}/user/homepage?page=${page}&limit=${limit}`,
+    { cache: "no-store" }
+  );
+  const data = await response.json();
+
+  if (data.error === false && data.data.blogs) {
+    return {
+      blogs: data.data.blogs,
+      totalPages: data.data.totalPages,
+    };
+  } else {
+    return { blogs: [], totalPages: 0 };
+  }
+}
+
+interface HomePageProps {
+  searchParams: { page?: string };
+}
+
+const HomePage: React.FC<HomePageProps> = async ({ searchParams }) => {
+  const page = parseInt(searchParams.page || "1", 10);
+  const limit = 10;
+
+  const { blogs, totalPages } = await fetchBlogs(page, limit);
+
+  return (
+    <>
+      <header>
+        <h1>Welcome to the Home Page</h1>
+        <nav>
+          <a href="/">Home</a> | <a href="/about">About</a>
+        </nav>
+      </header>
+
+      <div className="blogs-list">
+        {blogs.map((blog: Blog) => (
+          <div
+            key={blog.blog_id}
+            className="blog-item"
+            style={{
+              marginBottom: "20px",
+              padding: "10px",
+              border: "1px solid #ddd",
+              borderRadius: "5px",
+            }}
+          >
+            <h2>{blog.title}</h2>
+
+            <p>
+              {blog.content.length > 100
+                ? `${blog.content.substring(0, 100)}...`
+                : blog.content}
+            </p>
+
+            {blog.image && (
+              <img
+                src={blog.image}
+                alt={blog.title}
+                className="blog-image"
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  maxHeight: "200px",
+                  objectFit: "cover",
+                  borderRadius: "5px",
+                }}
+              />
+            )}
+
+            <div className="created-at">
+              <small>
+                Created at: {new Date(blog.createdAt).toLocaleString()}
+              </small>
+            </div>
+
+            <a
+              href={`/viewBlogs/${blog.slug}`}
+              className="view-more"
+              style={{
+                color: "#007bff",
+                textDecoration: "none",
+                fontWeight: "bold",
+              }}
+            >
+              View More
+            </a>
+          </div>
+        ))}
+      </div>
+
+      {/* Pagination Controls */}
+      <div
+        className="pagination"
+        style={{ textAlign: "center", margin: "20px 0" }}
+      >
+        <a
+          href={`?page=${page - 1}`}
+          style={{
+            margin: "0 5px",
+            padding: "5px 10px",
+            cursor: page === 1 ? "not-allowed" : "pointer",
+            color: page === 1 ? "gray" : "#007bff",
+          }}
+        >
+          Previous
+        </a>
+
+        <span style={{ margin: "0 10px" }}>
+          Page {page} of {totalPages}
+        </span>
+
+        <a
+          href={`?page=${page + 1}`}
+          style={{
+            margin: "0 5px",
+            padding: "5px 10px",
+            cursor: page === totalPages ? "not-allowed" : "pointer",
+            color: page === totalPages ? "gray" : "#007bff",
+          }}
+        >
+          Next
+        </a>
+      </div>
+    </>
+  );
+};
+
+export default HomePage;
