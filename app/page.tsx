@@ -1,5 +1,25 @@
 import React from "react";
 import "../app/homePage.css";
+import BlogPost from "./components/BlogPost";
+import Header from "./components/Header";
+import LikeButton from "../app/components/LikeButton"; // Import the LikeButton
+
+// interface Blog {
+//   blog_id: string;
+//   user_id: number;
+//   title: string;
+//   slug: string;
+//   content: string;
+//   image: string | null;
+//   likeCount: number;
+//   createdAt: string;
+//   updatedAt: string;
+//   comments: {
+//     username: string;
+//     comment: string;
+//     createdAt: string;
+//   }[];
+// }
 
 interface Blog {
   blog_id: string;
@@ -8,10 +28,24 @@ interface Blog {
   slug: string;
   content: string;
   image: string | null;
+  likeCount: number;
   createdAt: string;
   updatedAt: string;
+  comments: {
+    comment_id: string;
+    username: string;
+    comment: string;
+    createdAt: string;
+    replies: {
+      comment_id: string;
+      username: string;
+      comment: string;
+      createdAt: string;
+    }[];
+  }[];
 }
 
+// Fetch blogs server-side
 async function fetchBlogs(
   page: number,
   limit: number
@@ -37,6 +71,7 @@ interface HomePageProps {
   searchParams: { page?: string };
 }
 
+// Server-rendered HomePage component
 const HomePage: React.FC<HomePageProps> = async ({ searchParams }) => {
   const page = parseInt(searchParams.page || "1", 10);
   const limit = 10;
@@ -46,64 +81,14 @@ const HomePage: React.FC<HomePageProps> = async ({ searchParams }) => {
   return (
     <>
       <header>
-        <h1>Welcome to the Home Page</h1>
-        <nav>
-          <a href="/">Home</a> | <a href="/about">About</a>
-        </nav>
+        <Header />
       </header>
 
       <div className="blogs-list">
         {blogs.map((blog: Blog) => (
-          <div
-            key={blog.blog_id}
-            className="blog-item"
-            style={{
-              marginBottom: "20px",
-              padding: "10px",
-              border: "1px solid #ddd",
-              borderRadius: "5px",
-            }}
-          >
-            <h2>{blog.title}</h2>
-
-            <p>
-              {blog.content.length > 100
-                ? `${blog.content.substring(0, 100)}...`
-                : blog.content}
-            </p>
-
-            {blog.image && (
-              <img
-                src={blog.image}
-                alt={blog.title}
-                className="blog-image"
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  maxHeight: "200px",
-                  objectFit: "cover",
-                  borderRadius: "5px",
-                }}
-              />
-            )}
-
-            <div className="created-at">
-              <small>
-                Created at: {new Date(blog.createdAt).toLocaleString()}
-              </small>
-            </div>
-
-            <a
-              href={`/viewBlogs/${blog.slug}`}
-              className="view-more"
-              style={{
-                color: "#007bff",
-                textDecoration: "none",
-                fontWeight: "bold",
-              }}
-            >
-              View More
-            </a>
+          <div key={blog.blog_id} className="blog-post">
+            <BlogPost blog={blog} />
+            <LikeButton blog_id={blog.blog_id} initialLikes={blog.likeCount} />
           </div>
         ))}
       </div>
